@@ -91,7 +91,7 @@ new_client () {
 	cat /etc/openvpn/server/client-common.txt
 	# Rish: Split tunnel mod to avoid routing traffic through the VPN server
 	echo "route-nopull"
-	echo "10.8.0.0 255.255.0.0"
+	echo "route 10.8.0.0 255.255.0.0"
 	echo "<ca>"
 	cat /etc/openvpn/server/easy-rsa/pki/ca.crt
 	echo "</ca>"
