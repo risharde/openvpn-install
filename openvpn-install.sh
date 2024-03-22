@@ -89,6 +89,9 @@ new_client () {
 	# Generates the custom client.ovpn
 	{
 	cat /etc/openvpn/server/client-common.txt
+	# Rish: Split tunnel mod to avoid routing traffic through the VPN server
+	echo "route-nopull"
+	echo "10.8.0.0 255.255.0.0"
 	echo "<ca>"
 	cat /etc/openvpn/server/easy-rsa/pki/ca.crt
 	echo "</ca>"
@@ -272,6 +275,7 @@ YdEIqUuyyOP7uWrat2DX9GgdT0Kj3jlN9K5W7edjcrsZCwenyO4KbXCeAvzhzffi
 ssbzSibBsu/6iGtCOGEoXJf//////////wIBAg==
 -----END DH PARAMETERS-----' > /etc/openvpn/server/dh.pem
 	# Generate server.conf
+	# Rish: Adjusted the subnet to be wider so 10.8.1.x can communicate with 10.8.254.x 
 	echo "local $ip
 port $port
 proto $protocol
@@ -283,7 +287,7 @@ dh dh.pem
 auth SHA512
 tls-crypt tc.key
 topology subnet
-server 10.8.0.0 255.255.255.0" > /etc/openvpn/server/server.conf
+server 10.8.0.0 255.255.0.0" > /etc/openvpn/server/server.conf
 	# IPv6
 	if [[ -z "$ip6" ]]; then
 		echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server/server.conf
