@@ -250,8 +250,8 @@ LimitNPROC=infinity" > /etc/systemd/system/openvpn-server@server.service.d/disab
 	# Create the PKI, set up the CA and the server and client certificates
 	./easyrsa --batch init-pki
         # ORIGINAL has nopass appended, but this has been removed
-	./easyrsa --batch build-ca
-	./easyrsa --batch --days=3650 build-server-full server
+	./easyrsa --batch build-ca nopass
+	./easyrsa --batch --days=3650 build-server-full server nopass
 	./easyrsa --batch --days=3650 build-client-full "$client"
 	./easyrsa --batch --days=3650 gen-crl
 	# Move the stuff we need
@@ -466,7 +466,7 @@ else
 				client=$(sed 's/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-]/_/g' <<< "$unsanitized_client")
 			done
 			cd /etc/openvpn/server/easy-rsa/
-			./easyrsa --batch --days=3650 build-client-full "$client" nopass
+			./easyrsa --batch --days=3650 build-client-full "$client"
 			# Generates the custom client.ovpn
 			new_client
 			echo
